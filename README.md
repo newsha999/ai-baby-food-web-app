@@ -1,21 +1,22 @@
-# 👶 Baby-Led Weaning Recipe Generator
+# 👶 # 🍳 AI Recipe Generator
 
-A modern, AI-powered React application that generates safe, age-appropriate baby-led weaning (BLW) recipes using Groq's high-performance language models. This app combines cutting-edge AI with pediatric nutrition expertise to help parents confidently introduce solid foods to their babies.
+An intelligent React application that generates customized recipes based on available ingredients and the diner's age. This app uses Groq's high-performance language models to create diverse, personalized recipes tailored to different age groups and dietary needs.
 
 ---
 
 ## 🎯 Overview
 
-The Baby-Led Weaning Recipe Generator uses artificial intelligence to create customized recipes based on available ingredients, the child's age, and desired servings. It intelligently validates ingredient safety, detects potential allergens, and provides step-by-step cooking instructions with interactive progress tracking.
+The AI Recipe Generator uses advanced artificial intelligence to create recipes based on your available ingredients, age specifications, and desired servings. It intelligently validates ingredient appropriateness, detects potential allergens, and provides step-by-step cooking instructions with interactive progress tracking.
 
 ### Key Features
 
 - **AI-Powered Recipe Generation**: Uses advanced language models (Mixtral, Llama 3.1) to generate diverse, creative recipes
-- **Age-Appropriate Safety Validation**: Automatically checks ingredients against age-specific safety guidelines (6+ months to 6+ years)
-- **Allergen Detection & Warnings**: Identifies common allergens in ingredients and prompts for user acknowledgment before proceeding
+- **Age-Based Customization**: Tailors recipes and safety considerations based on the age you specify
+- **Ingredient Safety Validation**: Checks ingredients against age-specific safety guidelines
+- **Allergen Detection & Warnings**: Identifies common allergens in ingredients and prompts for user acknowledgment
 - **Dynamic Fallback System**: Automatically switches between multiple AI models if the primary option becomes unavailable
 - **Interactive Cooking Mode**: Step-by-step instructions with completion tracking and timer estimations
-- **Spice Detection**: Identifies and highlights common spices in recipes for awareness
+- **Spice Detection**: Identifies and highlights common spices in recipes
 - **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
 - **Real-time Feedback**: Validates inputs and provides helpful error messages
 
@@ -146,12 +147,12 @@ This allows you to experiment with different models or switch providers without 
 ```
 1. Enter Ingredients
    ↓
-2. Select Child's Age
+2. Specify Age
    ↓
 3. Choose Serving Size
    ↓
-4. Validate Safety
-   ├─ Check for unsafe ingredients ✓
+4. Validate Ingredients
+   ├─ Check for unsafe items ✓
    └─ Detect allergens ⚠️
    ↓
 5. Acknowledge Allergens (if any)
@@ -172,19 +173,29 @@ This allows you to experiment with different models or switch providers without 
 ### Safety Features
 
 **Age-Based Ingredient Validation**
-- 6-11 months: Strictest restrictions (no honey, nuts, choking hazards)
-- 12-23 months: Relaxed restrictions, still cautious
-- 24-35 months: Further relaxation
-- 36-71 months: Minor restrictions mainly on raw foods
-- 72+ months: Focus on raw eggs, meat, fish only
+
+The app includes pre-configured age groups with specific safety restrictions:
+- **6-11 months**: Strictest restrictions (choking hazards, hard foods)
+- **12-23 months**: Relaxed restrictions, still cautious
+- **24-35 months**: Further relaxation for certain foods
+- **36-71 months**: Minor restrictions on raw foods
+- **72+ months**: Focus on raw proteins only
+
+You can easily customize these age groups and restrictions in the `UNSAFE_INGREDIENTS` constant.
 
 **Allergen Detection**
-- Automatically identifies 8 common allergens:
-  - Milk, Eggs, Peanuts, Tree Nuts, Soy, Wheat, Fish, Shellfish
-- Requires explicit user acknowledgment before proceeding
+
+The app identifies 8 common allergens:
+- Milk, Eggs, Peanuts, Tree Nuts, Soy, Wheat, Fish, Shellfish
+
+Features include:
+- Automatic detection in ingredients
+- User acknowledgment required before proceeding
 - Shows which ingredients contain detected allergens
+- Educational information about allergen introduction
 
 **Model Fallback Protection**
+
 - If the primary model fails, automatically tries backup models
 - Ensures reliability even if one model becomes unavailable
 - Console logs show which model is being attempted
@@ -199,7 +210,7 @@ This allows you to experiment with different models or switch providers without 
 The AI creates 10 unique recipes per request that:
 - Use **only** ingredients from your provided list (no substitutions)
 - Combine 2-4 ingredients per recipe for variety
-- Vary cooking methods (finger foods, mashed, shaped, baked)
+- Vary cooking methods for diverse preparation styles
 - Include specific measurements for your serving size
 - Provide prep and cook times
 - Estimate calorie content
@@ -222,7 +233,7 @@ The app identifies 19 common spices:
 - Garlic powder, Onion powder, Black pepper, Turmeric, Ginger
 - Nutmeg, Vanilla, Parsley, Dill, Sage, Mint, Cilantro
 
-Spices are highlighted when detected to inform parents about flavor profiles.
+Spices are highlighted when detected to inform about flavor profiles.
 
 ---
 
@@ -243,7 +254,8 @@ Spices are highlighted when detected to inform parents about flavor profiles.
 RecipeGenerator (Main Component)
 ├── State Management
 │   ├── Ingredients input
-│   ├── Age and servings
+│   ├── Age selection
+│   ├── Servings quantity
 │   ├── Recipe list and selection
 │   ├── Cooking step tracking
 │   ├── Loading and error states
@@ -303,9 +315,9 @@ This system ensures your app stays running even if:
 ### Data Privacy
 
 - Recipe generation happens client-side
-- Ingredient data is sent to Groq's API (not stored locally)
+- Ingredient data is sent to Groq's API for processing
 - No user data is persisted or tracked
-- Always supervise children during cooking
+- Users are responsible for food safety practices
 
 ---
 
@@ -355,6 +367,44 @@ This system ensures your app stays running even if:
 
 ---
 
+## 🎯 Customization
+
+### Modifying Age Groups and Safety Rules
+
+Edit the `UNSAFE_INGREDIENTS` object to customize age-based restrictions:
+
+```javascript
+const UNSAFE_INGREDIENTS = {
+  '6-11': ['honey', 'whole nuts', ...],
+  '12-23': ['whole nuts', ...],
+  // Add or modify age groups as needed
+};
+```
+
+### Adding or Changing Allergens
+
+Update the `COMMON_ALLERGENS` object to include different allergens:
+
+```javascript
+const COMMON_ALLERGENS = {
+  'milk': ['milk', 'cheese', ...],
+  'sesame': ['sesame', 'tahini', ...],
+  // Add new allergen groups
+};
+```
+
+### Adding More Spices
+
+Extend the `COMMON_SPICES` array with additional spices to detect:
+
+```javascript
+const COMMON_SPICES = [
+  'cinnamon', 'cumin', 'cardamom', ...
+];
+```
+
+---
+
 ## 📚 Resource Links
 
 - **Groq Console**: https://console.groq.com
@@ -366,38 +416,14 @@ This system ensures your app stays running even if:
 
 ---
 
-## 📖 Baby-Led Weaning Information
-
-### What is BLW?
-
-Baby-led weaning is an approach to introducing solid foods where babies self-feed with age-appropriate foods rather than being spoon-fed purees. Babies develop motor skills and independence while learning to regulate their own food intake.
-
-### Age Guidelines
-
-- **6-11 months**: Introduction phase, soft foods only
-- **12-23 months**: Expanding variety, some texture tolerance
-- **24+ months**: Most foods acceptable with safety precautions
-
-### Important Safety Tips
-
-1. **Always supervise** during eating
-2. **Introduce one new food at a time** and wait 3-5 days
-3. **Watch for allergic reactions** (rashes, vomiting, difficulty breathing)
-4. **Avoid choking hazards** (hard candy, whole nuts, raw carrots)
-5. **Consult your pediatrician** before introducing allergens or if you have concerns
-6. **Cut foods appropriately** for your child's age and chewing ability
-
----
-
 ## ⚖️ Legal Disclaimer
 
-This application provides **recipe suggestions only** and is not a substitute for professional medical advice. Always consult your pediatrician regarding your child's dietary needs, allergies, and introduction of new foods. Parents are responsible for:
+This application provides **recipe suggestions only** and is not a substitute for professional advice. Users are responsible for:
 
-- Consulting with healthcare providers
-- Following food safety guidelines
-- Supervising children during meals
-- Assessing individual child's readiness for foods
-- Managing known allergies and sensitivities
+- Verifying food safety and nutritional content
+- Following proper food preparation guidelines
+- Managing known allergies and dietary restrictions
+- Consulting appropriate professionals for dietary concerns
 
 ---
 
@@ -409,6 +435,7 @@ We welcome contributions! Please feel free to:
 - Improve documentation
 - Enhance safety features
 - Add more ingredient validations
+- Optimize AI prompts
 
 ---
 

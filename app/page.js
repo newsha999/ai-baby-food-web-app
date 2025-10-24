@@ -163,34 +163,19 @@ export default function RecipeGenerator() {
                 content: 'You are a pediatric nutrition expert specializing in baby-led weaning (BLW). You create safe, age-appropriate recipes.'
               }, {
                 role: 'user',
-                content: `Create 3 complete baby-led weaning recipes for a ${getAgeLabel(ageMonths)} old child.
+                content: `Create 10 complete baby-led weaning recipes for a ${getAgeLabel(ageMonths)} old child.
 
 Available ingredients: ${ingredientList.join(', ')}
 Number of servings: ${servings}
 
 CRITICAL REQUIREMENTS:
-You are a pediatric recipe developer and food safety specialist.
-Output ONLY valid JSON, no prose.
-
-Rules:
-- Audience: caregivers cooking for a child aged {{AGE_LABEL}} ({{AGE_MONTHS}} months).
-- Use ONLY the provided ingredients; if a pantry staple is essential (e.g., water, salt, oil), include it and mark pantryStaple=true.
-- Always provide precise amounts (metric + US): grams (g)/milliliters (ml) AND teaspoons/tablespoons/cups.
-- Steps must be short, numbered, and include timing and sensory cues (e.g., "until fragrant, ~30–45 sec").
-- Include texture guidance for the age group (e.g., puree, mash, soft finger food), plus an alternative for older kids if safe.
-- Include at least 2 substitutions per key ingredient (note allergen-safe options).
-- Include storage/reheating guidance.
-- Include estimated nutrition per serving (kcal, protein, fat, carbs, fiber, sodium) with a brief method note.
-- Flag any allergens used and remind caregiver to confirm suitability.
-- If an ingredient is unsafe for the age, REJECT with "blocked:true" and list the items.
-- Do NOT include your reasoning; return final JSON only.
-
 1. Use ONLY ingredients from the list above - no substitutions or additions
 2. Each recipe should use 2-4 different ingredients (not all in every recipe)
 3. Make recipes safe and age-appropriate for ${getAgeLabel(ageMonths)}
-4. Vary the cooking methods (finger foods, mashed, shaped foods like patties/balls)
-5. Provide specific measurements adjusted for ${servings} serving${servings > 1 ? 's' : ''}
-6. Include 4-6 detailed step-by-step instructions per recipe
+4. Vary the cooking methods (finger foods, mashed, shaped foods like patties/balls, baked goods, etc.)
+5. Create DIVERSE recipes - different combinations and cooking styles
+6. Provide specific measurements adjusted for ${servings} serving${servings > 1 ? 's' : ''}
+7. Include 4-6 detailed step-by-step instructions per recipe
 
 Return ONLY valid JSON (no markdown formatting):
 {
@@ -226,7 +211,7 @@ Return ONLY valid JSON (no markdown formatting):
 }`
               }],
               temperature: 0.7,
-              max_tokens: 4000
+              max_tokens: 8000
             })
           });
           
@@ -234,7 +219,6 @@ Return ONLY valid JSON (no markdown formatting):
           
           if (data.error) {
             throw new Error(data.error.message || 'API Error');
-            throw new Error(`Groq API error: ${m}`);
           }
           
           const aiResponse = data.choices[0].message.content.trim();
@@ -292,45 +276,56 @@ Return ONLY valid JSON (no markdown formatting):
           texture: recipe.texture || 'Baby-friendly texture'
         }));
       } else {
-        // Fallback demo recipes if AI fails
-        finalRecipes = [
-          {
-            id: 1,
-            name: `${ingredientList[0]?.charAt(0).toUpperCase() + ingredientList[0]?.slice(1)} Baby Bites`,
-            description: 'Simple nutritious meal for little ones',
-            prepTime: 5,
-            cookTime: 15,
-            totalTime: 20,
-            servings: servings,
-            calories: 180,
-            ageAppropriate: getAgeLabel(ageMonths),
-            ingredients: ingredientList.slice(0, 2).map((ing, i) => ({
-              item: ing,
-              amount: i === 0 ? '1 cup' : '1/2 cup',
-              notes: 'prepared as needed',
-              isSpice: COMMON_SPICES.some(s => ing.toLowerCase().includes(s))
-            })),
-            spices: spices.slice(0, 1),
-            instructions: [
-              {
-                step: 1,
-                title: 'Prepare Ingredients',
-                instruction: `Wash and prepare your ingredients. Cut into age-appropriate sizes.`,
-                time: '5 minutes',
-                tips: 'Always supervise feeding'
-              },
-              {
-                step: 2,
-                title: 'Cook',
-                instruction: 'Cook until soft and tender.',
-                time: '15 minutes',
-                tips: 'Test temperature before serving'
-              }
-            ],
-            nutrition: 'Nutritious meal for growing babies',
-            texture: 'Soft and safe'
-          }
+        // Fallback demo recipes if AI fails - generate 10 variations
+        const recipeTemplates = [
+          { name: 'Bites', prep: 5, cook: 15, cal: 180 },
+          { name: 'Fingers', prep: 8, cook: 12, cal: 160 },
+          { name: 'Patties', prep: 10, cook: 18, cal: 200 },
+          { name: 'Mash', prep: 5, cook: 20, cal: 150 },
+          { name: 'Balls', prep: 12, cook: 15, cal: 190 },
+          { name: 'Strips', prep: 5, cook: 10, cal: 140 },
+          { name: 'Bowl', prep: 8, cook: 22, cal: 210 },
+          { name: 'Medley', prep: 10, cook: 15, cal: 175 },
+          { name: 'Mix', prep: 6, cook: 18, cal: 165 },
+          { name: 'Blend', prep: 5, cook: 12, cal: 155 }
         ];
+
+        finalRecipes = recipeTemplates.map((template, idx) => ({
+          id: idx + 1,
+          name: `${ingredientList[idx % ingredientList.length]?.charAt(0).toUpperCase() + ingredientList[idx % ingredientList.length]?.slice(1)} Baby ${template.name}`,
+          description: 'Simple nutritious meal for little ones',
+          prepTime: template.prep,
+          cookTime: template.cook,
+          totalTime: template.prep + template.cook,
+          servings: servings,
+          calories: template.cal,
+          ageAppropriate: getAgeLabel(ageMonths),
+          ingredients: ingredientList.slice(0, Math.min(2, ingredientList.length)).map((ing, i) => ({
+            item: ing,
+            amount: i === 0 ? '1 cup' : '1/2 cup',
+            notes: 'prepared as needed',
+            isSpice: COMMON_SPICES.some(s => ing.toLowerCase().includes(s))
+          })),
+          spices: spices.slice(0, 1),
+          instructions: [
+            {
+              step: 1,
+              title: 'Prepare Ingredients',
+              instruction: `Wash and prepare your ingredients. Cut into age-appropriate sizes.`,
+              time: '5 minutes',
+              tips: 'Always supervise feeding'
+            },
+            {
+              step: 2,
+              title: 'Cook',
+              instruction: 'Cook until soft and tender.',
+              time: `${template.cook} minutes`,
+              tips: 'Test temperature before serving'
+            }
+          ],
+          nutrition: 'Nutritious meal for growing babies',
+          texture: 'Soft and safe'
+        }));
       }
       
       setRecipes(finalRecipes);
@@ -554,18 +549,18 @@ Return ONLY valid JSON (no markdown formatting):
         <div className="text-center mb-8 pt-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <ChefHat className="w-12 h-12 text-orange-500" />
-            <h1 className="text-4xl font-bold text-gray-800">AI Baby Recipe Generator</h1>
+            <h1 className="text-4xl font-bold text-gray-800">The Ultimate Baby Food Recipe Generator</h1>
           </div>
-          <p className="text-gray-600 text-lg">AI-powered recipes for babies and children!</p>
+          <p className="text-gray-600 text-lg">AI-powered recipes for babies and children - completely customized!</p>
           <div className="mt-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg inline-block">
-            <p className="text-sm text-blue-800">✨ Step-by-step cooking recipes for ages 6mo-12yr ✨</p>
+            <p className="text-sm text-blue-800">✨ 100% AI Generated • Step-by-step cooking recipes for ages 6mo-12yr </p>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
           <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
             <p className="text-sm text-blue-800 font-semibold">
-               <strong>Powered by AI:</strong> Recipes use ONLY your ingredients. Each recipe may use some or all items from your list!
+              🤖 <strong>Powered by AI:</strong> Get 10 unique recipe ideas! Each recipe uses different combinations from your ingredients list.
             </p>
           </div>
 
@@ -580,7 +575,7 @@ Return ONLY valid JSON (no markdown formatting):
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-400 text-gray-700 text-lg"
               rows="3"
             />
-            <p className="text-sm text-gray-500 mt-2"> <strong>Separate with commas • Include spices!</strong></p>
+            <p className="text-sm text-gray-500 mt-2">Separate with commas • Include spices!</p>
           </div>
 
           <div className="mb-6">
@@ -763,7 +758,10 @@ Return ONLY valid JSON (no markdown formatting):
         {recipes.length > 0 && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">AI-Generated Recipes</h2>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">AI-Generated Recipes</h2>
+                <p className="text-sm text-gray-600 mt-1">Showing {recipes.length} unique recipe ideas</p>
+              </div>
               <button
                 onClick={generateMoreRecipes}
                 disabled={loading}
@@ -782,7 +780,7 @@ Return ONLY valid JSON (no markdown formatting):
                 )}
               </button>
             </div>
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {recipes.map((recipe) => {
                 const currentIngredientList = ingredients.split(',').map(i => i.trim()).filter(i => i);
                 

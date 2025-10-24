@@ -151,7 +151,7 @@ export default function RecipeGenerator() {
       if (GROQ_API_KEY !== 'YOUR_GROQ_API_KEY') {
         // Model fallback chain - try models in order until one works
         const modelOptions = [
-          'llama-3.1-70b-versatile',           // Primary model
+          'mixtral-8x7b-32768',           // Primary model
           'llama-3.2-90b-text-preview',        // Backup 1
           'llama-3.1-8b-instant'               // Backup 2 (faster, cheaper)
         ];

@@ -8,34 +8,34 @@ An intelligent, AI-powered React application that generates safe, age-appropriat
 
 ## 📑 Table of Contents
 
-- [⚡ Quick Start (2 Minutes)](#⚡-quick-start-2-minutes)
-- [🎯 Overview](#🎯-overview)
-- [🌟 Key Features](#🌟-key-features)
-- [📋 Age Guidelines](#📋-age-guidelines)
-- [🚀 Getting Started](#🚀-getting-started)
+- [Quick Start (2 Minutes)](#quick-start-2-minutes)
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Age Guidelines](#age-guidelines)
+- [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [🔧 Configuration](#🔧-configuration)
-  - [Environment Variables](#-environment-variables)
-  - [Vercel Deployment](#-configuration-in-vercel)
-- [📁 Project Structure](#📁-project-structure)
-- [🎮 How to Use](#🎮-how-to-use)
-- [🛠️ Technical Architecture](#🛠️-technical-architecture)
-- [⚙️ AI Model Fallback System](#⚙️-ai-model-fallback-system)
-- [📊 Groq API Information](#📊-groq-api-information)
-- [🌐 Browser Compatibility](#🌐-browser-compatibility)
-- [❌ Known Limitations](#❌-known-limitations)
-- [❓ FAQ](#❓-faq)
-- [🚨 Troubleshooting](#🚨-troubleshooting)
-- [🔐 Security & Privacy](#🔐-security--privacy)
-- [🎨 Customization Guide](#🎨-customization-guide)
-- [👨‍⚖️ Legal Disclaimer](#👨‍⚖️-legal-disclaimer)
-- [🤝 Contributing](#🤝-contributing)
-- [📚 Resources](#📚-resources)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+  - [Vercel Deployment](#vercel-deployment)
+- [Project Structure](#project-structure)
+- [How to Use](#how-to-use)
+- [Technical Architecture](#technical-architecture)
+- [AI Model Fallback System](#ai-model-fallback-system)
+- [Groq API Information](#groq-api-information)
+- [Browser Compatibility](#browser-compatibility)
+- [Known Limitations](#known-limitations)
+- [FAQ](#faq)
+- [Troubleshooting](#troubleshooting)
+- [Security & Privacy](#security--privacy)
+- [Customization Guide](#customization-guide)
+- [Legal Disclaimer](#legal-disclaimer)
+- [Contributing](#contributing)
+- [Resources](#resources)
 
 ---
 
-## ⚡ Quick Start (2 Minutes)
+## Quick Start (2 Minutes)
 
 Get the app running locally in just 2 minutes:
 
@@ -66,7 +66,7 @@ npm run dev
 
 ---
 
-## 🎯 Overview
+## Overview
 
 The Baby Food Recipe Generator uses advanced artificial intelligence to create nutritious, safe, and age-appropriate recipes tailored specifically to your baby's developmental stage. Simply enter the ingredients you have on hand, select your baby's age, and the AI will generate 10 unique recipe ideas designed for your little one.
 
@@ -87,7 +87,7 @@ The Baby Food Recipe Generator uses advanced artificial intelligence to create n
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 | Feature | Description | Benefit |
 |---------|-------------|---------|
@@ -106,7 +106,7 @@ The Baby Food Recipe Generator uses advanced artificial intelligence to create n
 
 ---
 
-## 📋 Age Guidelines
+## Age Guidelines
 
 The app is designed for babies and toddlers from 6 months to 6+ years:
 
@@ -122,7 +122,7 @@ The app is designed for babies and toddlers from 6 months to 6+ years:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -205,9 +205,9 @@ Navigate to **http://localhost:3000** and start generating recipes!
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
-### 📋 Environment Variables
+### Environment Variables
 
 All environment variables use the `NEXT_PUBLIC_` prefix because they're accessed from the browser.
 
@@ -226,7 +226,7 @@ All environment variables use the `NEXT_PUBLIC_` prefix because they're accessed
 | **llama-3.1-70b-versatile** | 🐢 Slower | ✨ Excellent | Maximum quality recipes | Higher |
 | **llama-3.1-8b-instant** | ⚡⚡ Fastest | ✅ Decent | Emergency fallback | Lowest |
 
-### 🔧 Configuration in Vercel
+### Vercel Deployment
 
 #### Step-by-Step Vercel Setup
 
@@ -286,7 +286,7 @@ This allows you to A/B test models, switch providers, or respond to performance 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 baby-recipe-generator/
@@ -314,7 +314,7 @@ baby-recipe-generator/
 
 ---
 
-## 🎮 How to Use
+## How to Use
 
 ### Basic Workflow
 
@@ -395,7 +395,7 @@ baby-recipe-generator/
 
 ---
 
-## 🛠️ Technical Architecture
+## Technical Architecture
 
 ### Tech Stack
 
@@ -515,7 +515,7 @@ User Selection
 
 ---
 
-## ⚙️ AI Model Fallback System
+## AI Model Fallback System
 
 The recipe generator includes intelligent fallback protection to ensure reliability:
 
@@ -555,7 +555,7 @@ Open your browser's Developer Tools (F12) to see:
 
 ---
 
-## 📊 Groq API Information
+## Groq API Information
 
 ### What is Groq?
 
@@ -612,7 +612,7 @@ On Groq's console:
 
 ---
 
-## 🌐 Browser Compatibility
+## Browser Compatibility
 
 ### Tested & Supported
 
@@ -640,7 +640,7 @@ On Groq's console:
 
 ---
 
-## ❌ Known Limitations
+## Known Limitations
 
 ### What This App CAN'T Do
 
@@ -680,7 +680,7 @@ On Groq's console:
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 ### General Questions
 
@@ -769,7 +769,7 @@ A: This could be because:
 
 ---
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### "API Key Error" or "401 Unauthorized"
 
@@ -908,7 +908,7 @@ A: This could be because:
 
 ---
 
-## 🔐 Security & Privacy
+## Security & Privacy
 
 ### API Key Safety
 
@@ -969,7 +969,7 @@ A: This could be because:
 
 ---
 
-## 🎨 Customization Guide
+## Customization Guide
 
 ### Modifying Age Groups
 
@@ -1038,7 +1038,7 @@ Create 15 complete baby-food recipes...
 
 ---
 
-## 👨‍⚖️ Legal Disclaimer
+## Legal Disclaimer
 
 **⚠️ Important**: This application provides recipe suggestions only and is NOT a substitute for professional medical advice.
 
@@ -1080,7 +1080,7 @@ Always prioritize your baby's health and safety over any app recommendations.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the community! Ways to contribute:
 
@@ -1116,7 +1116,7 @@ We welcome contributions from the community! Ways to contribute:
 
 ---
 
-## 📚 Resources
+## Resources
 
 ### Official Documentation
 - **Groq Console**: https://console.groq.com

@@ -28,6 +28,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        {/* Footer */}
+        <footer className="text-center text-sm text-gray-500 py-6 border-t">
+          © {new Date().getFullYear()} Built by{" "}
+          <a
+            href="https://www.linkedin.com/in/newsha-peymani-34a29a152/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Newsha Peymani
+          </a>
+        </footer>
       </body>
     </html>
   );

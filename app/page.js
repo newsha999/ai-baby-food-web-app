@@ -151,9 +151,9 @@ export default function RecipeGenerator() {
       if (GROQ_API_KEY !== 'YOUR_GROQ_API_KEY') {
         // Model fallback chain - try models in order until one works
         const modelOptions = [
-          'mixtral-8x7b-32768',           // Primary model
-          'llama-3.2-90b-text-preview',        // Backup 1
-          'llama-3.1-8b-instant'               // Backup 2 (faster, cheaper)
+          process.env.NEXT_PUBLIC_PRIMARY_MODEL || 'mixtral-8x7b-32768',
+          process.env.NEXT_PUBLIC_BACKUP_MODEL_1 || 'llama-3.1-70b-versatile',
+          process.env.NEXT_PUBLIC_BACKUP_MODEL_2 || 'llama-3.1-8b-instant'
         ];
         
         let lastError = null;
@@ -899,4 +899,3 @@ Return ONLY valid JSON (no markdown formatting):
     </div>
   );
 }
-                        

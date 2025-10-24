@@ -149,15 +149,27 @@ export default function RecipeGenerator() {
       let aiRecipes = null;
       
       if (GROQ_API_KEY !== 'YOUR_GROQ_API_KEY') {
-        try {
-          const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        // Model fallback chain - try models in order until one works
+        const modelOptions = [
+          'llama-3.1-70b-versatile',           // Primary model
+          'llama-3.2-90b-text-preview',        // Backup 1
+          'llama-3.1-8b-instant'               // Backup 2 (faster, cheaper)
+        ];
+        
+        let lastError = null;
+        
+        for (const model of modelOptions) {
+          try {
+            console.log(`🔄 Trying model: ${model}`);
+            
+            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${GROQ_API_KEY}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'moonshotai/kimi-k2-instruct',
+              model: model,  // Use model from fallback chain
               messages: [{
                 role: 'system',
                 content: 'You are a pediatric nutrition expert specializing in baby-led weaning (BLW). You create safe, age-appropriate recipes.'
@@ -218,7 +230,10 @@ Return ONLY valid JSON (no markdown formatting):
           const data = await response.json();
           
           if (data.error) {
-            throw new Error(data.error.message || 'API Error');
+            // Model failed, try next one
+            lastError = new Error(data.error.message || 'API Error');
+            console.warn(`❌ Model ${model} failed:`, lastError.message);
+            continue;  // Try next model
           }
           
           const aiResponse = data.choices[0].message.content.trim();
@@ -230,15 +245,25 @@ Return ONLY valid JSON (no markdown formatting):
           const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             aiRecipes = JSON.parse(jsonMatch[0]);
+            console.log(`✅ Success with model: ${model}`);
             console.log('✅ AI Generated Recipes:', aiRecipes);
+            break;  // Success! Stop trying other models
           } else {
             throw new Error('Could not parse AI response as JSON');
           }
           
         } catch (error) {
-          console.error('❌ AI Error:', error);
-          aiRecipes = null;
+          lastError = error;
+          console.warn(`❌ Model ${model} failed:`, error.message);
+          // Continue to next model
         }
+      }
+      
+      // If all models failed
+      if (!aiRecipes && lastError) {
+        console.error('❌ All AI models failed. Last error:', lastError);
+        aiRecipes = null;
+      }
       }
       
       // Build final recipes array
@@ -549,11 +574,11 @@ Return ONLY valid JSON (no markdown formatting):
         <div className="text-center mb-8 pt-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <ChefHat className="w-12 h-12 text-orange-500" />
-            <h1 className="text-4xl font-bold text-gray-800">The Ultimate Baby Food Recipe Generator</h1>
+            <h1 className="text-4xl font-bold text-gray-800">AI Baby Recipe Generator</h1>
           </div>
           <p className="text-gray-600 text-lg">AI-powered recipes for babies and children - completely customized!</p>
           <div className="mt-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg inline-block">
-            <p className="text-sm text-blue-800">✨ 100% AI Generated • Step-by-step cooking recipes for ages 6mo-12yr </p>
+            <p className="text-sm text-blue-800">✨ Step-by-step cooking recipes for ages 6mo-12yr ✨</p>
           </div>
         </div>
 
@@ -874,3 +899,4 @@ Return ONLY valid JSON (no markdown formatting):
     </div>
   );
 }
+                        

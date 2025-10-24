@@ -1,4 +1,4 @@
-# 👶 # 🍳 AI Recipe Generator
+# 🍳 AI Baby Food Recipe Generator 👶
 
 An intelligent React application that generates customized recipes based on available ingredients and the diner's age. This app uses Groq's high-performance language models to create diverse, personalized recipes tailored to different age groups and dietary needs.
 
